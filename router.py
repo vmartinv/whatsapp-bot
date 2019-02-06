@@ -11,7 +11,7 @@ from views.personal_view import PersonalView
 from views.media import MediaViews
 # ~ from views.super_views import SuperViews
 # ~ from views.group_admin import GroupAdminViews
-# ~ from views.google import GoogleViews
+from views.google import GoogleViews
 # ~ from views.bing import BingViews
 # ~ from views.quiz import QuizView
 from views.help_view import HelpView
@@ -33,8 +33,8 @@ class RouteLayer():
         # Personal view (camera capturing)
         routes.extend(PersonalView().routes())
         
-        # Google views to handle tts, search and youtube
-        # ~ routes.extend(GoogleViews(self).routes)
+        # Google views to handle search and youtube
+        routes.extend(GoogleViews().routes())
 
         # Bing views to handle image search
         # ~ routes.extend(BingViews(self).routes)

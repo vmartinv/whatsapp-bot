@@ -62,27 +62,33 @@ class MediaViews(View):
             downloaded_image.write(buf)
             downloaded_image.close()
             image_on_web.close()
-            return Message("bot", file_path, "image")
+            return Message("bot", file_path, image_on_web.info().type)
         except:
             return Message("bot", u"error downloading image")
-
-    def send_url_print(self, driver, message, match):
+    
+    @staticmethod
+    def url_print(driver, web_url):
         try:
-            web_url = message.data[len("/url "):]
             main_window = driver.current_window_handle
             driver.execute_script('''window.open("{}","_blank");'''.format(web_url))
-            WebDriverWait(driver, 10).until(
-                      lambda driver: driver.execute_script("return document.readyState") == "complete")
+            time.sleep(0.5)
             driver.switch_to_window(driver.window_handles[-1])
-            WebDriverWait(driver, 10).until(
-                      lambda driver: driver.execute_script("return document.readyState") == "complete")
+            try:
+                WebDriverWait(driver, 5).until(
+                          lambda driver: driver.execute_script("return document.readyState") == "complete")
+            except:
+                pass
             screenshot_file = 'image.png'
             driver.save_screenshot(screenshot_file)
             driver.close()
             driver.switch_to_window(main_window)
-            return Message("bot", screenshot_file, "image")
+            return Message("bot", screenshot_file, "image/png")
         except:
             return Message("bot", u"error downloading image")
+    
+    def send_url_print(self, driver, message, match):
+        web_url = message.data[len("/url "):]
+        return MediaViews.url_print(driver, web_url)
 
     # ~ def send_tts(self, driver, message, match):
         # ~ tts_text = match.group("tts_text")

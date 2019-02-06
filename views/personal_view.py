@@ -21,7 +21,7 @@ class PersonalView(View):
             cam.release()
             if s:
                 cv2.imwrite("image.jpg",img) #save image
-                return Message("bot", "image.jpg", "image")
+                return Message("bot", "image.jpg", "image/jpeg")
         except Exception as e:
             logging.exception("Error sending answer for %s:%s" % (answer.text, e))
             return Message("bot", u"error capturing picture")

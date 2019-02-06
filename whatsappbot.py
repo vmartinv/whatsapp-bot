@@ -56,7 +56,7 @@ class WhatsappBot():
         #Load up Web Whatsapp
         self.driver.get("https://web.whatsapp.com/")
 
-        wait_load = WebDriverWait(self.driver, 6)
+        wait_load = WebDriverWait(self.driver, 99999)
 
         qr_path =  "//img[contains(@alt,'Scan me!')]"
         x_arg = "//span[@data-icon='menu']"
@@ -128,7 +128,7 @@ class WhatsappBot():
                 input_box = wait_load.until(EC.presence_of_element_located((
                     By.XPATH, inp)))
                 input_box.send_keys(answer.data.replace("\n", Keys.SHIFT + Keys.ENTER + Keys.SHIFT) + Keys.ENTER)
-            elif answer.type == "image":
+            elif answer.type.startswith("image/") or answer.type.startswith("video/"):
                 try:
                     # we simulate a file drag and drop
                     # can get broken if whatsapp UI changes
@@ -147,7 +147,7 @@ target.scrollIntoView(true);
 var rect = target.getBoundingClientRect(),
 x = rect.left + (offsetX || (rect.width >> 1)),
 y = rect.top + (offsetY || (rect.height >> 1)),
-dataTransfer = { files: this.files , items : {kind : "file", type: "image/jpeg"}, types : ["Files"] };
+dataTransfer = { files: this.files , items : {kind : "file", type: \"""" + answer.type + """\"}, types : ["Files"] };
 
 [['dragenter', 'vW7d1'], ['dragleave', 'NuJ4j'], ['drop', '_3TSht']].forEach(function (name) {
     var candidates = document.getElementsByClassName(name[1]);

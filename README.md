@@ -11,6 +11,7 @@ that it doesn't get banned and also it can be fully automatized.
 
 - /url: Given a link it can get a screenshot of the page. If it's a video it will send the video.
 - /camera: Takes a picture using the webcam and sends it.
+- /search: get results for google (can also follow links from the first result page)
 
 # Setup
 1. Setup an Android Emulator (I used android-studio to create a Google Pixel with API 28, but other versions should work fine)

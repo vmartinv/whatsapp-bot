@@ -19,4 +19,6 @@ class HelpView(View):
 /url <some_url>: Sends a screenshot of a web page
 /camera: Takes a picture with the server camera and sends it
 /ping: Replies pong
+/search <term>: Searches in google
+/search <term> 3: Searches in google and gets the third result (can use other index)
 """.strip())
