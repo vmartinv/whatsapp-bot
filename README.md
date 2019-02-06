@@ -13,8 +13,10 @@ that it doesn't get banned and also it can be fully automatized.
 3. Install the Python libraries:
         > pip install -r requirements.txt
 4. Install v4l2loopback kernel module (we need linux)
-5. Run `./run_emulator.sh` (you should adjust the name of the emulator)
+5. Close the emulator and run `./run_emulator.sh` (you should adjust the name of the emulator)
 6. Run `python2 whatsappbot.py` to finally run the bot.
+7. The bot will put the QR on the fake webcam. Go to Whatsapp on the emulator and scan the QR in order to login into Whatsapp web.
+8. The bot should be working. Next logins won't require scanning the QR again.
 
 # Warning
 This is not very much tested and many steps can get broken,
