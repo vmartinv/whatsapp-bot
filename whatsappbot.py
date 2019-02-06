@@ -120,14 +120,14 @@ class WhatsappBot():
         
     
     def handle_message(self, msg):
-        answer = self.router.route(msg)
+        answer = self.router.route(self.driver, msg)
         if answer:
             wait_load = WebDriverWait(self.driver, 1)
             if answer.type == "text":
                 inp = "//div[@contenteditable='true']"
                 input_box = wait_load.until(EC.presence_of_element_located((
                     By.XPATH, inp)))
-                input_box.send_keys(answer.data + Keys.ENTER)
+                input_box.send_keys(answer.data.replace("\n", Keys.SHIFT + Keys.ENTER + Keys.SHIFT) + Keys.ENTER)
             elif answer.type == "image":
                 try:
                     # we simulate a file drag and drop

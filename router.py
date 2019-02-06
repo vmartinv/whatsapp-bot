@@ -8,12 +8,13 @@ import logging
 
 from views.basic_view import BasicView
 from views.personal_view import PersonalView
-# ~ from views.media import MediaViews
+from views.media import MediaViews
 # ~ from views.super_views import SuperViews
 # ~ from views.group_admin import GroupAdminViews
 # ~ from views.google import GoogleViews
 # ~ from views.bing import BingViews
 # ~ from views.quiz import QuizView
+from views.help_view import HelpView
 
 
 class RouteLayer():
@@ -39,7 +40,7 @@ class RouteLayer():
         # ~ routes.extend(BingViews(self).routes)
 
         # Media views to handle url print screen and media download
-        # ~ routes.extend(MediaViews(self).routes)
+        routes.extend(MediaViews().routes())
 
         # adds super fun views
         # ~ routes.extend(SuperViews(self).routes)
@@ -51,10 +52,13 @@ class RouteLayer():
         # read the issue on: https://github.com/joaoricardo000/whatsapp-bot-seed/issues/4
         # enable on your own risk!
         # routes.extend(GroupAdminViews(self).routes)
+        
+        # help view
+        routes.extend(HelpView().routes())
 
         self.views = [(re.compile(pattern), callback) for pattern, callback in routes]
 
-    def route(self, message):
+    def route(self, driver, message):
         if message.type == "text":
             "Get the text from message and tests on every route for a match"
             try:
@@ -62,7 +66,7 @@ class RouteLayer():
                     match = route.match(message.data)
                     if match:  # in case of regex match, the callback is called, passing the message and the match object
                         logging.info("(MSG)[%s]:\t%s" % (message.sender, message.data))
-                        return callback(message, match)
+                        return callback(driver, message, match)
             except Exception as e:
                 logging.exception("Error routing message: %s from %s\n%s" % (message.data, message.sender, e))
         return None
