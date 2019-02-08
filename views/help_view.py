@@ -20,5 +20,5 @@ class HelpView(View):
 /camera: Takes a picture with the server camera and sends it
 /ping: Replies pong
 /search <term>: Searches in google
-/search <term> 3: Searches in google and gets the third result (can use other index)
+/search <term> #3: Searches in google and gets the third result (can use other index)
 """.strip())

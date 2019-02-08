@@ -49,6 +49,7 @@ class WhatsappBot():
         self.router = RouteLayer()
         chrome_options = Options()
         chrome_options.add_argument("user-data-dir="+user_data) 
+        # ~ chrome_options.add_argument("--window-size=540,1080")
 
         #chrome webdriver opened by python.
         self.driver = webdriver.Chrome(chrome_options=chrome_options)
@@ -100,7 +101,7 @@ class WhatsappBot():
                 qr_thread.join()
 
         logging.info("logged in to whatsapp web")
-    
+
     def loop(self):
         wait_message = WebDriverWait(self.driver, 5)
         msg_xpath = "//span[contains(@title, '/')]"
@@ -109,16 +110,16 @@ class WhatsappBot():
                 new_message = wait_message.until(EC.presence_of_element_located((
                     By.XPATH, msg_xpath)))
             except TimeoutException:
-                logging.info("no messages")
                 new_message = None
             if new_message:
                 sender = new_message.find_element_by_xpath("../../..//span[contains(@title, '')]")
                 msg = Message(sender.text, new_message.text)
                 new_message.click()
                 self.handle_message(msg)
+            else:
+                logging.info("no messages")
             time.sleep(5) # seconds
-        
-    
+
     def handle_message(self, msg):
         answer = self.router.route(self.driver, msg)
         if answer:
@@ -171,6 +172,7 @@ return input;
                     send_button = wait_upload.until(EC.presence_of_element_located((
                         By.XPATH, send_button_xpath)))
                     send_button.click()
+                    time.sleep(3)
                     
                     # This code simulates attaching the file
                     # by using the clipboard and
