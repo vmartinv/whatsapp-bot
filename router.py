@@ -70,5 +70,6 @@ class RouteLayer():
                         return callback(driver, message, match)
             except Exception as e:
                 logging.exception("Error routing message: %s from %s\n%s" % (message.data, message.sender, e))
+                return None #Debug
                 return Message("bot", "I've run into trouble answering this message :(\nPlease help me by checking my log")
         return Message("bot", "I don't know how to answer this message")

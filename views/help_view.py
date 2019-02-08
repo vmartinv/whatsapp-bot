@@ -17,8 +17,11 @@ class HelpView(View):
             return Message("bot", u"""
 /help: Prints this help
 /url <some_url>: Sends a screenshot of a web page
-/camera: Takes a picture with the server camera and sends it
-/ping: Replies pong
 /search <term>: Searches in google
 /search <term> #3: Searches in google and gets the third result (can use other index)
+/around <term>: Searchs in google maps <term> using the last location provided.
+/camera: Takes a picture with the server camera and sends it
+/video <duration> <fps>: Takes a video with the server camera and sends it. Arguments are optionals.
+/play: Plays the last audio sent through the server speaker
+/ping: Replies pong
 """.strip())

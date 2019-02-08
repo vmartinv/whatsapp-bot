@@ -11,15 +11,21 @@ from basic_view import View
 import utils
 import logging
 import requests
-from xml.sax.saxutils import escape, unescape
-import cgi
 from BeautifulSoup import BeautifulSoup
 import time
+import re
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException
 
 class GoogleViews():
     def __init__(self):
         self.cache = {}
         self.last = None
+        self.maps_location_re = re.compile("^https://maps.google.com/maps\?q=(?P<lat>-?\d+\.\d+)%2C(?P<long>-?\d+\.\d+)&z=(?P<z>-?\d+)")
 
     def routes(self):
         return [
@@ -27,10 +33,25 @@ class GoogleViews():
              # ~ self.send_yt_video),
             ("/s(earch)?\s+\#(?P<idx>[^$]+)$", self.google_search_last),
             ("/s(earch)?\s+(?P<term>[^\#$]+)(\s+\#(?P<idx>[^$]+))?$", self.google_search),
+            ("/a(round)?\s+(?P<term>[^$]+)$", self.search_around_me),
         ]
 
     # ~ def send_yt_video(self, driver, message, match):
         # ~ self.yt_sender.send_by_url(jid=message.getFrom(), file_url=match.group("video_id"))
+    
+    def search_around_me(self, driver, message, match):
+        location_xpath = "//a[contains(@href,'https://maps.google.com/maps')]"
+        wait_upload = WebDriverWait(driver, 15)
+        try:
+            location = wait_upload.until(EC.presence_of_element_located((
+                By.XPATH, location_xpath)))
+        except TimeoutException:
+            return Message("bot", "You need to send your location first.")
+        location = driver.find_elements_by_xpath(location_xpath)[-1]
+        coords = self.maps_location_re.match(location.get_attribute("href"))
+        term = utils.encode_html(match.group("term"))
+        url = "https://www.google.com/maps/search/{0}/@{1},{2},{3}z".format(term, coords.group("lat"), coords.group("long"), coords.group("z"))
+        return utils.url_screenshot(driver, url)
     
     @staticmethod
     def get_links(driver):
