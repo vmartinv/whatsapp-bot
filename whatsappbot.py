@@ -129,7 +129,7 @@ class WhatsappBot():
                 input_box = wait_load.until(EC.presence_of_element_located((
                     By.XPATH, inp)))
                 input_box.send_keys(answer.data.replace("\n", Keys.SHIFT + Keys.ENTER + Keys.SHIFT) + Keys.ENTER)
-            elif answer.type.startswith("image/") or answer.type.startswith("video/"):
+            elif answer.type.startswith("image/") or answer.type.startswith("video/") or answer.type.startswith("audio/"):
                 try:
                     # we simulate a file drag and drop
                     # can get broken if whatsapp UI changes
@@ -171,6 +171,7 @@ return input;
                     wait_upload = WebDriverWait(self.driver, 10)
                     send_button = wait_upload.until(EC.presence_of_element_located((
                         By.XPATH, send_button_xpath)))
+                    time.sleep(0.5)
                     send_button.click()
                     time.sleep(3)
                     
