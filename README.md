@@ -21,6 +21,7 @@ that it doesn't get banned and also it can be fully automated.
 1. Setup an Android Emulator (I used android-studio to create a Google Pixel with API 28, but other versions should work fine)
 2. Install Whatsapp in the emulator and register it with a number (don't use your personal number as you can eventually get banned)
 3. Install the Python libraries:
+
         > pip install -r requirements.txt
 4. Install v4l2loopback kernel module (linux required) and gst-launch-1.0.
 5. Close the emulator and run `./run_emulator.sh` (you should adjust the name of the emulator)
