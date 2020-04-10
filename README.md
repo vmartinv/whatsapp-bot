@@ -5,7 +5,7 @@ detected quickly (thus banned), this implementation uses whatsapp web.
 
 In order to do that we setup an emulator and send our QR image by
 simulating a fake webcam. This setup is complicated but guarantees
-that it doesn't get banned and also it can be fully automatized.
+that it doesn't get banned and also it can be fully automated.
 
 # Features
 
