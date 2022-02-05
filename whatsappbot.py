@@ -8,7 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 import time
 import image2camera
 from urllib2 import urlopen
@@ -112,10 +112,16 @@ class WhatsappBot():
             except TimeoutException:
                 new_message = None
             if new_message:
-                sender = new_message.find_element_by_xpath("../../..//span[contains(@title, '')]")
-                msg = Message(sender.text, new_message.text)
-                new_message.click()
-                self.handle_message(msg)
+                try:
+                    sender = new_message.find_element_by_xpath("../../..//span[contains(@title, '')]")
+                    msg = Message(sender.text, new_message.text)
+                    new_message.click()
+                    self.handle_message(msg)
+                except StaleElementReferenceException:
+                    logging.error("message removed unexpectedly!")
+                except Exception as e:
+                    logging.exception("Unknown error processing message %s".format(e))
+                    # ~ return Message("bot", "I've run into trouble answering this message :(\nPlease help me by checking my log")
             else:
                 logging.info("no messages")
             time.sleep(5) # seconds
